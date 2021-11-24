@@ -10,6 +10,7 @@ void mainLoop(struct Window *window)
     int gapX;
     int gapY;
     Color color;
+    Rectangle cell;
     struct Grid grid =
     {
         .cols = 15,
@@ -23,7 +24,7 @@ void mainLoop(struct Window *window)
         window->frameTime = GetFrameTime();
         window->width = GetScreenWidth();
         window->height = GetScreenHeight();
-        gapX = (window->width)/grid.cols;
+        gapX = (window->width)/grid.cols; // spacing between cells
         gapY = (window->height)/grid.rows;
 
         BeginDrawing();
@@ -53,7 +54,8 @@ void mainLoop(struct Window *window)
                             color = VIOLET;
                             break;
                     }
-                    DrawRectangle(gapX*i, gapY*j, gapX - 3, gapY - 3, color); // 3 is spacing
+                    cell = (Rectangle){gapX*i, gapY*j, gapX - 3, gapY - 3}; // 3 is spacing
+                    DrawRectangleRec(cell, color);
                 }
             }
         EndDrawing();
