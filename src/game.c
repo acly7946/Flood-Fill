@@ -7,10 +7,13 @@ static void initGrid(struct Grid *grid);
 
 void mainLoop(struct Window *window)
 {
+    int gapX;
+    int gapY;
+    Color color;
     struct Grid grid =
     {
-        .cols = 15,
-        .rows = 15,
+        .cols = 6,
+        .rows = 6,
         .data = NULL
     };
     initGrid(&grid);
@@ -20,9 +23,39 @@ void mainLoop(struct Window *window)
         window->frameTime = GetFrameTime();
         window->width = GetScreenWidth();
         window->height = GetScreenHeight();
+        gapX = (window->width)/grid.cols;
+        gapY = (window->height)/grid.rows;
 
         BeginDrawing();
             ClearBackground(WHITE);
+            for(int i = 0; i < grid.rows; i++)
+            {
+                for(int j = 0; j < grid.cols; j++)
+                {
+                    switch(grid.data[i][j])
+                    {
+                        case 0:
+                            color = RED;
+                            break;
+                        case 1:
+                            color = ORANGE;
+                            break;
+                        case 2:
+                            color = YELLOW;
+                            break;
+                        case 3:
+                            color = GREEN;
+                            break;
+                        case 4:
+                            color = BLUE;
+                            break;
+                        case 5:
+                            color = VIOLET;
+                            break;
+                    }
+                    DrawRectangle(gapX*i, gapY*j, gapX - 3, gapY - 3, color); // 3 is spacing
+                }
+            }
         EndDrawing();
     }
 }
