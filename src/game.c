@@ -12,8 +12,8 @@ void mainLoop(struct Window *window)
     Color color;
     struct Grid grid =
     {
-        .cols = 6,
-        .rows = 6,
+        .cols = 15,
+        .rows = 15,
         .data = NULL
     };
     initGrid(&grid);
