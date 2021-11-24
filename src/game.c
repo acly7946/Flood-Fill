@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <stdlib.h>
 
-static void initGrid(struct Grid *grid);
+static void initGrid(struct Grid *grid, int cols, int rows);
 
 void mainLoop(struct Window *window)
 {
@@ -11,13 +11,8 @@ void mainLoop(struct Window *window)
     int gapY;
     Color color;
     Rectangle cell;
-    struct Grid grid =
-    {
-        .cols = 15,
-        .rows = 15,
-        .data = NULL
-    };
-    initGrid(&grid);
+    struct Grid grid;
+    initGrid(&grid, 15, 15);
 
     while(!WindowShouldClose())
     {
@@ -62,21 +57,23 @@ void mainLoop(struct Window *window)
     }
 }
 
-static void initGrid(struct Grid *grid)
+static void initGrid(struct Grid *grid, int cols, int rows)
 {
     // Create 1D array, then convert to 2D
-    int *data1D = (int*)malloc(grid->rows * grid->cols * sizeof(int));
-    grid->data = (int**)malloc(grid->rows * grid->cols * sizeof(int*));
+    int *data1D = (int*)malloc(rows * cols * sizeof(int));
+    grid->data = (int**)malloc(rows * cols * sizeof(int*));
+    grid->cols = cols;
+    grid->rows = rows;
 
-    for(int i = 0; i < grid->rows; i++)
+    for(int i = 0; i < rows; i++)
     {
-        grid->data[i] = data1D + (i * grid->cols);
+        grid->data[i] = data1D + (i * cols);
     }
 
     // Fill with random nums from 1-6
-    for(int i = 0; i < grid->rows; i++)
+    for(int i = 0; i < rows; i++)
     {
-        for(int j = 0; j < grid->cols; j++)
+        for(int j = 0; j < cols; j++)
         {
             grid->data[i][j] = rand()%6;
         }
