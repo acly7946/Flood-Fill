@@ -13,48 +13,51 @@ void mainLoop(struct Window *window)
 	Rectangle cell;
 	struct Grid grid;
 
-	initGrid(&grid, 5, 5);
+	initGrid(&grid, 15, 15);
 
 	while(!WindowShouldClose())
 	{
-		window->frameTime = GetFrameTime();
-		window->width = GetScreenWidth();
-		window->height = GetScreenHeight();
-		spacingX = (window->width)/grid.cols;
-		spacingY = (window->height)/grid.rows;
+		if(!GetKeyPressed())
+		{
+			window->frameTime = GetFrameTime();
+			window->width = GetScreenWidth();
+			window->height = GetScreenHeight();
+			spacingX = (window->width)/grid.cols;
+			spacingY = (window->height)/grid.rows;
 
-		BeginDrawing();
-			ClearBackground(WHITE);
-			for(int i = 0; i < grid.cols; i++)
-			{
-				for(int j = 0; j < grid.rows; j++)
+			BeginDrawing();
+				ClearBackground(WHITE);
+				for(int i = 0; i < grid.cols; i++)
 				{
-					switch(grid.data[i][j])
+					for(int j = 0; j < grid.rows; j++)
 					{
-						case 0:
-							color = RED;
-							break;
-						case 1:
-							color = ORANGE;
-							break;
-						case 2:
-							color = YELLOW;
-							break;
-						case 3:
-							color = GREEN;
-							break;
-						case 4:
-							color = BLUE;
-							break;
-						case 5:
-							color = VIOLET;
-							break;
+						switch(grid.data[i][j])
+						{
+							case 0:
+								color = RED;
+								break;
+							case 1:
+								color = ORANGE;
+								break;
+							case 2:
+								color = YELLOW;
+								break;
+							case 3:
+								color = GREEN;
+								break;
+							case 4:
+								color = BLUE;
+								break;
+							case 5:
+								color = VIOLET;
+								break;
+						}
+						cell = (Rectangle){spacingX*i, spacingY*j, spacingX - 3, spacingY - 3}; // 3 is spacing
+						DrawRectangleRec(cell, color);
 					}
-					cell = (Rectangle){spacingX*i, spacingY*j, spacingX - 3, spacingY - 3}; // 3 is spacing
-					DrawRectangleRec(cell, color);
 				}
-			}
-		EndDrawing();
+			EndDrawing();
+		}
 	}
 }
 
