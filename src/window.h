@@ -3,9 +3,9 @@
 
 struct Window
 {
-    float frameTime;
-    int width;
-    int height;
+	float frameTime;
+	int width;
+	int height;
 };
 
 #endif
