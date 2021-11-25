@@ -9,11 +9,13 @@ void mainLoop(struct Window *window)
 {
 	int spacingX;
 	int spacingY;
+	int selectionX;
+	int selectionY;
 	Color color;
 	Rectangle cell;
 	struct Grid grid;
 
-	initGrid(&grid, 5, 5);
+	initGrid(&grid, 20, 20);
 
 	while(!WindowShouldClose())
 	{
@@ -23,13 +25,19 @@ void mainLoop(struct Window *window)
 		spacingX = (window->width)/grid.cols;
 		spacingY = (window->height)/grid.rows;
 
+		if(IsMouseButtonDown(0)) // left mouse button
+		{
+			selectionX = GetMouseX() / spacingX;
+			selectionY = GetMouseY() / spacingY;
+		}
+
 		BeginDrawing();
 			ClearBackground(WHITE);
-			for(int i = 0; i < grid.cols; i++)
+			for(int col = 0; col < grid.cols; col++)
 			{
-				for(int j = 0; j < grid.rows; j++)
+				for(int row = 0; row < grid.rows; row++)
 				{
-					switch(grid.data[i][j])
+					switch(grid.data[col][row])
 					{
 						case 0:
 							color = RED;
@@ -50,8 +58,12 @@ void mainLoop(struct Window *window)
 							color = VIOLET;
 							break;
 					}
-					cell = (Rectangle){spacingX*i, spacingY*j, spacingX - 3, spacingY - 3}; // 3 is spacing
+					cell = (Rectangle){spacingX*col, spacingY*row, spacingX - 3, spacingY - 3}; // 3 is spacing
 					DrawRectangleRec(cell, color);
+					if((col == selectionX) && (row == selectionY))
+					{
+						DrawRectangleLinesEx(cell, 5, BLACK);
+					}
 				}
 			}
 		EndDrawing();
