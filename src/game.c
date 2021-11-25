@@ -12,6 +12,7 @@ void mainLoop(struct Window *window)
     Color color;
     Rectangle cell;
     struct Grid grid;
+
     initGrid(&grid, 15, 15);
 
     while(!WindowShouldClose())
@@ -24,9 +25,9 @@ void mainLoop(struct Window *window)
 
         BeginDrawing();
             ClearBackground(WHITE);
-            for(int i = 0; i < grid.rows; i++)
+            for(int i = 0; i < grid.cols; i++)
             {
-                for(int j = 0; j < grid.cols; j++)
+                for(int j = 0; j < grid.rows; j++)
                 {
                     switch(grid.data[i][j])
                     {
