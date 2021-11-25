@@ -16,8 +16,8 @@
 
 struct Options
 {
-    int msaa;
-    int vsync;
+	int msaa;
+	int vsync;
 };
 
 static void usage();
@@ -25,14 +25,14 @@ static void initGame(struct Window *window, struct Options *options);
 
 int main(int argc, char *argv[])
 {
-    int optc;
-    struct Window window;
-    struct Options options = // defaults
-    {
-        .msaa = 0,
-        .vsync = 1
-    };
-    static struct option long_options[] =
+	int optc;
+	struct Window window;
+	struct Options options = // defaults
+	{
+		.msaa = 0,
+		.vsync = 1
+	};
+	static struct option long_options[] =
 	{
 		{"msaa", optional_argument, NULL, MSAA_OPT},
 		{"help", no_argument, NULL, 'h'},
@@ -44,20 +44,20 @@ int main(int argc, char *argv[])
 		switch(optc)
 		{
 			case MSAA_OPT:
-                if(!(sscanf(optarg, "%d", &options.msaa)))
-                {
-                    fprintf(stderr, "--msaa must be set to either 1 or 0");
-                    usage();
-                }
-                break;
+				if(!(sscanf(optarg, "%d", &options.msaa)))
+				{
+					fprintf(stderr, "--msaa must be set to either 1 or 0");
+					usage();
+				}
+				break;
 
-            case VSYNC_OPT:
-                if(!(sscanf(optarg, "%d", &options.vsync)))
-                {
-                    fprintf(stderr, "--vsync must be set to either 1 or 0");
-                    usage();
-                }
-                break;
+			case VSYNC_OPT:
+				if(!(sscanf(optarg, "%d", &options.vsync)))
+				{
+					fprintf(stderr, "--vsync must be set to either 1 or 0");
+					usage();
+				}
+				break;
 
 			case 'V':
 				printf("%s, %s, %s\n", PROGRAM, VERSION, AUTHOR);
@@ -69,12 +69,12 @@ int main(int argc, char *argv[])
 		}
 	}
 
-    initGame(&window, &options);
-    mainLoop(&window);
+	initGame(&window, &options);
+	mainLoop(&window);
 
-    CloseAudioDevice();
-    CloseWindow();
-    return EXIT_SUCCESS;
+	CloseAudioDevice();
+	CloseWindow();
+	return EXIT_SUCCESS;
 }
 
 static void usage()
@@ -82,7 +82,7 @@ static void usage()
 	fprintf(stderr,
 	"Usage: %s [OPTIONS]\n"
 	"\n"
-	"  -h, --help     Print this help message and immediately quit\n"
+	"  -h, --help	 Print this help message and immediately quit\n"
 	"  -V, --version  Print version number and immediately quit\n"
 	"\n"
 	"  --msaa=[0|1]   Set anti-aliasing (default: 0)\n"
@@ -93,19 +93,19 @@ static void usage()
 
 static void initGame(struct Window *window, struct Options *options)
 {
-    window->width = 800,
-    window->height = 600;
+	window->width = 800,
+	window->height = 600;
 
-    if(options->msaa)
-    {
-        SetConfigFlags(FLAG_MSAA_4X_HINT);
-    }
-    if(options->vsync)
-    {
-        SetConfigFlags(FLAG_VSYNC_HINT);
-    }
+	if(options->msaa)
+	{
+		SetConfigFlags(FLAG_MSAA_4X_HINT);
+	}
+	if(options->vsync)
+	{
+		SetConfigFlags(FLAG_VSYNC_HINT);
+	}
 
-    srand(time(NULL));
-    InitWindow(window->width, window->height, "Flood It");
-    InitAudioDevice();
+	srand(time(NULL));
+	InitWindow(window->width, window->height, "Flood It");
+	InitAudioDevice();
 }
