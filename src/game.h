@@ -6,8 +6,7 @@
 
 struct Grid
 {
-	int cols;
-	int rows;
+	int size;
 	Color **color;
 };
 
