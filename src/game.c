@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define MARGIN 10
-#define GAP 5
+#define GAP 3
 
 static void initGrid(struct Grid *grid, int size);
 
@@ -35,17 +35,17 @@ void mainLoop(struct Window *window)
 		}
 
 		BeginDrawing();
-			ClearBackground(WHITE);
+			ClearBackground(RAYWHITE);
 			for(int col = 0; col < grid.size; col++)
 			{
 				for(int row = 0; row < grid.size; row++)
 				{
 					cell = (Rectangle){spacingX*col + MARGIN, spacingY*row + MARGIN, spacingX - GAP, spacingY - GAP};
-					DrawRectangleRec(cell, grid.color[col][row]);
-					//DrawText(TextFormat("col: %d", col), spacingX*col + 10, spacingY*row + 10, 20, PINK);
-					//DrawText(TextFormat("row: %d", row), spacingX*col + 10, spacingY*row + 30, 20, PINK);
+					DrawRectangleRounded(cell, 0.1, 1, grid.color[col][row]);
+					DrawRectangleRoundedLines(cell, 0.1, 1, 1, BLACK);
 				}
 			}
+			DrawFPS(20, 20);
 		EndDrawing();
 	}
 }
