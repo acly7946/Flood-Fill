@@ -4,9 +4,9 @@
 #include <stdlib.h>
 
 #define MARGIN 10
-#define GAP 1
+#define GAP 5
 
-static void initGrid(struct Grid *grid, int cols, int rows);
+static void initGrid(struct Grid *grid, int size);
 
 void mainLoop(struct Window *window)
 {
@@ -17,15 +17,15 @@ void mainLoop(struct Window *window)
 	int selectionX = 0;
 	int selectionY = 0;
 
-	initGrid(&grid, 5, 3);
+	initGrid(&grid, 20);
 
 	while(!WindowShouldClose())
 	{
 		window->frameTime = GetFrameTime();
 		window->width = GetScreenWidth();
 		window->height = GetScreenHeight();
-		spacingX = (window->width - MARGIN)/grid.cols;
-		spacingY = (window->height - MARGIN)/grid.rows;
+		spacingX = (window->width - MARGIN)/grid.size;
+		spacingY = (window->height - MARGIN)/grid.size;
 
 		if(IsMouseButtonDown(0)) // left mouse button
 		{
@@ -36,38 +36,37 @@ void mainLoop(struct Window *window)
 
 		BeginDrawing();
 			ClearBackground(WHITE);
-			for(int col = 0; col < grid.cols; col++)
+			for(int col = 0; col < grid.size; col++)
 			{
-				for(int row = 0; row < grid.rows; row++)
+				for(int row = 0; row < grid.size; row++)
 				{
 					cell = (Rectangle){spacingX*col + MARGIN, spacingY*row + MARGIN, spacingX - GAP, spacingY - GAP};
 					DrawRectangleRec(cell, grid.color[col][row]);
-					DrawText(TextFormat("col: %d", col), spacingX*col + 10, spacingY*row + 10, 20, PINK);
-					DrawText(TextFormat("row: %d", row), spacingX*col + 10, spacingY*row + 30, 20, PINK);
+					//DrawText(TextFormat("col: %d", col), spacingX*col + 10, spacingY*row + 10, 20, PINK);
+					//DrawText(TextFormat("row: %d", row), spacingX*col + 10, spacingY*row + 30, 20, PINK);
 				}
 			}
 		EndDrawing();
 	}
 }
 
-static void initGrid(struct Grid *grid, int cols, int rows)
+static void initGrid(struct Grid *grid, int size)
 {
 	Color color;
-	grid->cols = cols;
-	grid->rows = rows;
+	grid->size = size;
 	// Create 1D array, then convert to 2D
-	Color *data1D = (Color*)malloc(rows * cols * sizeof(Color));
-	grid->color = (Color**)malloc(rows * cols * sizeof(Color*));
+	Color *data1D = (Color*)malloc(size * size * sizeof(Color));
+	grid->color = (Color**)malloc(size * size * sizeof(Color*));
 
-	for(int i = 0; i < rows; i++)
+	for(int i = 0; i < size; i++)
 	{
-		grid->color[i] = data1D + (i * cols);
+		grid->color[i] = data1D + (i * size);
 	}
 
 	// Fill with random colors from 1-6
-	for(int i = 0; i < rows; i++)
+	for(int col = 0; col < size; col++)
 	{
-		for(int j = 0; j < cols; j++)
+		for(int row = 0; row < size; row++)
 		{
 			switch(rand()%6)
 			{
@@ -90,7 +89,7 @@ static void initGrid(struct Grid *grid, int cols, int rows)
 					color = VIOLET;
 					break;
 			}
-			grid->color[i][j] = color;
+			grid->color[col][row] = color;
 		}
 	}
 }
