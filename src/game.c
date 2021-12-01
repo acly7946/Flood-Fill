@@ -17,7 +17,7 @@ void mainLoop(struct Window *window)
 	int selectionX = 0;
 	int selectionY = 0;
 
-	initGrid(&grid, 10, 20);
+	initGrid(&grid, 5, 3);
 
 	while(!WindowShouldClose())
 	{
@@ -56,8 +56,8 @@ static void initGrid(struct Grid *grid, int cols, int rows)
 	grid->cols = cols;
 	grid->rows = rows;
 	// Create 1D array, then convert to 2D
-	Color *data1D = (Color*)malloc(rows * cols * sizeof(int));
-	grid->color = (Color**)malloc(rows * cols * sizeof(int*));
+	Color *data1D = (Color*)malloc(rows * cols * sizeof(Color));
+	grid->color = (Color**)malloc(rows * cols * sizeof(Color*));
 
 	for(int i = 0; i < rows; i++)
 	{
