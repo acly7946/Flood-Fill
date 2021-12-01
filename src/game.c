@@ -64,7 +64,7 @@ static void initGrid(struct Grid *grid, int cols, int rows)
 		grid->color[i] = data1D + (i * cols);
 	}
 
-	// Fill with random nums from 1-6
+	// Fill with random colors from 1-6
 	for(int i = 0; i < rows; i++)
 	{
 		for(int j = 0; j < cols; j++)
