@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <stdlib.h>
 
-#define MARGIN 10
+#define MARGIN 9
 #define GAP 3
 
 static void initGrid(struct Grid *grid, int size);
@@ -31,7 +31,13 @@ void mainLoop(struct Window *window)
 		{
 			selectionX = GetMouseX() / spacingX;
 			selectionY = GetMouseY() / spacingY;
-			grid.color[selectionX][selectionY] = RED;
+			if((selectionX < grid.size) && (selectionY < grid.size)) // is between window boundaries
+			{
+				if((selectionX >= 0) && (selectionY >= 0))
+				{
+					grid.color[selectionX][selectionY] = RED;
+				}
+			}
 		}
 
 		BeginDrawing();
@@ -45,7 +51,6 @@ void mainLoop(struct Window *window)
 					DrawRectangleRoundedLines(cell, 0.1, 1, 1, BLACK);
 				}
 			}
-			DrawFPS(20, 20);
 		EndDrawing();
 	}
 }
