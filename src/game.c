@@ -7,6 +7,7 @@
 #define GAP 3
 
 static void initGrid(struct Grid *grid, int size);
+static void fillAdjacent(struct Grid *grid, int currentX, int currentY);
 
 void mainLoop(struct Window *window)
 {
@@ -17,7 +18,7 @@ void mainLoop(struct Window *window)
 	int selectionX = 0;
 	int selectionY = 0;
 
-	initGrid(&grid, 20);
+	initGrid(&grid, 15);
 
 	while(!WindowShouldClose())
 	{
@@ -31,11 +32,11 @@ void mainLoop(struct Window *window)
 		{
 			selectionX = GetMouseX() / spacingX;
 			selectionY = GetMouseY() / spacingY;
-			if((selectionX < grid.size) && (selectionY < grid.size)) // is between window boundaries
+			if((selectionX < grid.size) && (selectionY < grid.size)) // within window boundaries
 			{
 				if((selectionX >= 0) && (selectionY >= 0))
 				{
-					grid.color[selectionX][selectionY] = RED;
+					fillAdjacent(&grid, selectionX, selectionY);
 				}
 			}
 		}
@@ -95,6 +96,47 @@ static void initGrid(struct Grid *grid, int size)
 					break;
 			}
 			grid->color[col][row] = color;
+		}
+	}
+}
+
+static void fillAdjacent(struct Grid *grid, int currentX, int currentY)
+{
+	/*
+
+	Checks adjacent cells in this order:
+	[ ][2][ ]
+	[1][ ][3]
+	[ ][4][ ]
+
+	will recurse for each matching color
+
+	*/
+
+	int checkingX = currentX;
+	int checkingY = currentY;
+	struct // vectors for checking adjacent cells
+	{
+		int dx;
+		int dy;
+	}	adjacent[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
+	grid->color[checkingX][checkingY] = ORANGE;
+	for(int i = 0; i < 4; i++)
+	{
+		checkingX = currentX + adjacent[i].dx;
+		checkingY = currentY + adjacent[i].dy;
+
+		if((grid->color[checkingX][checkingY].r == 230) && (grid->color[checkingX][checkingY].g == 41))
+		{
+			if((checkingX < grid->size) && (checkingY < grid->size)) // within window boundaries
+			{
+				if((checkingX >= 0) && (checkingY >= 0))
+				{
+					grid->color[checkingX][checkingY] = ORANGE;
+					fillAdjacent(grid, checkingX, checkingY);
+				}
+			}
 		}
 	}
 }
