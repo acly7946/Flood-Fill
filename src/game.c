@@ -79,8 +79,9 @@ void mainLoop(struct Window *window)
 
 static void initGrid(struct Grid *grid, int size)
 {
-	grid->size = size;
+	free(grid->color); // if done again with smaller value
 	// Create 1D array, then convert to 2D
+	grid->size = size;
 	int *data1D = (int*)malloc(size * size * sizeof(int));
 	grid->color = (int**)malloc(size * size * sizeof(int*));
 
@@ -118,19 +119,22 @@ static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int 
 		int dy;
 	}	adjacent[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-	grid->color[row][col] = newColor;
-	for(int i = 0; i < 4; i++)
+	if(oldColor != newColor)
 	{
-		checkRow = row + adjacent[i].dx;
-		checkCol = col + adjacent[i].dy;
-		if((checkRow < grid->size) && (checkCol < grid->size)) // within window boundaries
+		grid->color[row][col] = newColor;
+		for(int i = 0; i < 4; i++)
 		{
-			if((checkRow >= 0) && (checkCol >= 0))
+			checkRow = row + adjacent[i].dx;
+			checkCol = col + adjacent[i].dy;
+			if((checkRow < grid->size) && (checkCol < grid->size)) // within window boundaries
 			{
-				if(grid->color[checkRow][checkCol] == oldColor)
+				if((checkRow >= 0) && (checkCol >= 0))
 				{
-					grid->color[checkRow][checkCol] = newColor;
-					fillAdjacent(grid, checkRow, checkCol, oldColor, newColor);
+					if(grid->color[checkRow][checkCol] == oldColor)
+					{
+						grid->color[checkRow][checkCol] = newColor;
+						fillAdjacent(grid, checkRow, checkCol, oldColor, newColor);
+					}
 				}
 			}
 		}
