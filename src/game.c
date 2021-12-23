@@ -7,7 +7,7 @@
 #define GAP 3
 
 static void initGrid(struct Grid *grid, int size);
-static void fillAdjacent(struct Grid *grid, int currentX, int currentY);
+static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int newColor);
 
 void mainLoop(struct Window *window)
 {
@@ -37,18 +37,18 @@ void mainLoop(struct Window *window)
 			{
 				if((selectionX >= 0) && (selectionY >= 0))
 				{
-					fillAdjacent(&grid, selectionX, selectionY);
+					fillAdjacent(&grid, selectionX, selectionY, 1, 0); // fill with red for now
 				}
 			}
 		}
 
 		BeginDrawing();
 			ClearBackground(RAYWHITE);
-			for(int col = 0; col < grid.size; col++)
+			for(int row = 0; row < grid.size; row++)
 			{
-				for(int row = 0; row < grid.size; row++)
+				for(int col = 0; col < grid.size; col++)
 				{
-					switch(grid.color[col][row])
+					switch(grid.color[row][col])
 					{
 						case 0:
 							color = RED;
@@ -69,13 +69,14 @@ void mainLoop(struct Window *window)
 							color = VIOLET;
 							break;
 					}
-					cell = (Rectangle){spacingX*col + MARGIN, spacingY*row + MARGIN, spacingX - GAP, spacingY - GAP};
+					cell = (Rectangle){spacingX*row + MARGIN, spacingY*col + MARGIN, spacingX - GAP, spacingY - GAP};
 					DrawRectangleRounded(cell, 0.1, 1, color);
 					DrawRectangleRoundedLines(cell, 0.1, 1, 1, BLACK);
 				}
 			}
 		EndDrawing();
 	}
+	free(grid.color);
 }
 
 static void initGrid(struct Grid *grid, int size)
@@ -91,47 +92,47 @@ static void initGrid(struct Grid *grid, int size)
 	}
 
 	// Fill with random colors from 1-6
-	for(int col = 0; col < size; col++)
+	for(int row = 0; row < size; row++)
 	{
-		for(int row = 0; row < size; row++)
+		for(int col = 0; col < size; col++)
 		{
-			grid->color[col][row] = rand()%6;
+			grid->color[row][col] = rand()%6;
 		}
 	}
 }
 
-static void fillAdjacent(struct Grid *grid, int currentX, int currentY)
+static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int newColor)
 {
 	/*
 	Checks adjacent cells in this order:
-	[ ][2][ ]
-	[1][ ][3]
-	[ ][4][ ]
+	[ ][1][ ]
+	[4][ ][2]
+	[ ][3][ ]
 	will recurse for each matching color
 	*/
 
-	int checkingX = currentX;
-	int checkingY = currentY;
+	int checkRow = row; // The positions we're checking currently
+	int checkCol = col;
 	struct // vectors for checking adjacent cells
 	{
 		int dx;
 		int dy;
 	}	adjacent[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-	grid->color[checkingX][checkingY] = 0;
+	grid->color[checkRow][checkCol] = newColor;
 	for(int i = 0; i < 4; i++)
 	{
-		checkingX = currentX + adjacent[i].dx;
-		checkingY = currentY + adjacent[i].dy;
+		checkRow = row + adjacent[i].dx;
+		checkCol = col + adjacent[i].dy;
 
-		if((checkingX < grid->size) && (checkingY < grid->size)) // within window boundaries
+		if((checkRow < grid->size) && (checkCol < grid->size)) // within window boundaries
 		{
-			if((checkingX >= 0) && (checkingY >= 0))
+			if((checkRow >= 0) && (checkCol >= 0))
 			{
-				if(grid->color[checkingX][checkingY] == 1) // 0 = RED
+				if(grid->color[checkRow][checkCol] == oldColor)
 				{
-					grid->color[checkingX][checkingY] = 0;
-					fillAdjacent(grid, checkingX, checkingY);
+					grid->color[checkRow][checkCol] = newColor;
+					fillAdjacent(grid, checkRow, checkCol, oldColor, newColor);
 				}
 			}
 		}
