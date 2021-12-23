@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 #define MARGIN 9
-#define GAP 3
 
 static void initGrid(struct Grid *grid, int size);
 static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int newColor);
@@ -37,7 +36,7 @@ void mainLoop(struct Window *window)
 			{
 				if((selectionX >= 0) && (selectionY >= 0))
 				{
-					fillAdjacent(&grid, selectionX, selectionY, grid.color[selection3X][selectionY], 0); // fill with red for now
+					fillAdjacent(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // fill with red for now
 				}
 			}
 		}
@@ -69,9 +68,8 @@ void mainLoop(struct Window *window)
 							color = VIOLET;
 							break;
 					}
-					cell = (Rectangle){spacingX*row + MARGIN, spacingY*col + MARGIN, spacingX - GAP, spacingY - GAP};
-					DrawRectangleRounded(cell, 0.1, 1, color);
-					DrawRectangleRoundedLines(cell, 0.1, 1, 1, BLACK);
+					cell = (Rectangle){spacingX*row + MARGIN, spacingY*col + MARGIN, spacingX, spacingY};
+					DrawRectangleRec(cell, color);
 				}
 			}
 		EndDrawing();
