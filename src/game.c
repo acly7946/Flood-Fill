@@ -104,7 +104,7 @@ static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int 
 	/*
 	Checks adjacent cells in this order:
 	[ ][1][ ]
-	[4][0][2]
+	[4][ ][2]
 	[ ][3][ ]
 	will recurse for each matching color
 	and fill oldColor with newColor
@@ -116,9 +116,10 @@ static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int 
 	{
 		int dx;
 		int dy;
-	}	adjacent[] = {{0, 0}, {-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+	}	adjacent[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-	for(int i = 0; i < 5; i++)
+	grid->color[row][col] = newColor;
+	for(int i = 0; i < 4; i++)
 	{
 		checkRow = row + adjacent[i].dx;
 		checkCol = col + adjacent[i].dy;
