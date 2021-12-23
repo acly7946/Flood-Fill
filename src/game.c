@@ -29,7 +29,7 @@ void mainLoop(struct Window *window)
 		spacingX = (window->width - MARGIN)/grid.size;
 		spacingY = (window->height - MARGIN)/grid.size;
 
-		if(IsMouseButtonDown(0)) // left mouse button
+		if(IsMouseButtonPressed(0)) // left mouse button
 		{
 			selectionX = GetMouseX() / spacingX;
 			selectionY = GetMouseY() / spacingY;
@@ -37,7 +37,7 @@ void mainLoop(struct Window *window)
 			{
 				if((selectionX >= 0) && (selectionY >= 0))
 				{
-					fillAdjacent(&grid, selectionX, selectionY, 1, 0); // fill with red for now
+					fillAdjacent(&grid, selectionX, selectionY, grid.color[selection3X][selectionY], 0); // fill with red for now
 				}
 			}
 		}
@@ -106,9 +106,10 @@ static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int 
 	/*
 	Checks adjacent cells in this order:
 	[ ][1][ ]
-	[4][ ][2]
+	[4][0][2]
 	[ ][3][ ]
 	will recurse for each matching color
+	and fill oldColor with newColor
 	*/
 
 	int checkRow = row; // The positions we're checking currently
@@ -117,14 +118,12 @@ static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int 
 	{
 		int dx;
 		int dy;
-	}	adjacent[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+	}	adjacent[] = {{0, 0}, {-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-	grid->color[checkRow][checkCol] = newColor;
-	for(int i = 0; i < 4; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		checkRow = row + adjacent[i].dx;
 		checkCol = col + adjacent[i].dy;
-
 		if((checkRow < grid->size) && (checkCol < grid->size)) // within window boundaries
 		{
 			if((checkRow >= 0) && (checkCol >= 0))
