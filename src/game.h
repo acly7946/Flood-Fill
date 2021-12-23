@@ -7,7 +7,7 @@
 struct Grid
 {
 	int size;
-	Color **color;
+	int **color;
 };
 
 void mainLoop(struct Window *window);
