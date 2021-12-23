@@ -14,6 +14,7 @@ void mainLoop(struct Window *window)
 	int spacingX;
 	int spacingY;
 	Rectangle cell;
+	Color color;
 	struct Grid grid;
 	int selectionX = 0;
 	int selectionY = 0;
@@ -47,8 +48,29 @@ void mainLoop(struct Window *window)
 			{
 				for(int row = 0; row < grid.size; row++)
 				{
+					switch(grid.color[col][row])
+					{
+						case 0:
+							color = RED;
+							break;
+						case 1:
+							color = ORANGE;
+							break;
+						case 2:
+							color = YELLOW;
+							break;
+						case 3:
+							color = GREEN;
+							break;
+						case 4:
+							color = BLUE;
+							break;
+						case 5:
+							color = VIOLET;
+							break;
+					}
 					cell = (Rectangle){spacingX*col + MARGIN, spacingY*row + MARGIN, spacingX - GAP, spacingY - GAP};
-					DrawRectangleRounded(cell, 0.1, 1, grid.color[col][row]);
+					DrawRectangleRounded(cell, 0.1, 1, color);
 					DrawRectangleRoundedLines(cell, 0.1, 1, 1, BLACK);
 				}
 			}
@@ -58,11 +80,10 @@ void mainLoop(struct Window *window)
 
 static void initGrid(struct Grid *grid, int size)
 {
-	Color color;
 	grid->size = size;
 	// Create 1D array, then convert to 2D
-	Color *data1D = (Color*)malloc(size * size * sizeof(Color));
-	grid->color = (Color**)malloc(size * size * sizeof(Color*));
+	int *data1D = (int*)malloc(size * size * sizeof(int));
+	grid->color = (int**)malloc(size * size * sizeof(int*));
 
 	for(int i = 0; i < size; i++)
 	{
@@ -74,28 +95,7 @@ static void initGrid(struct Grid *grid, int size)
 	{
 		for(int row = 0; row < size; row++)
 		{
-			switch(rand()%6)
-			{
-				case 0:
-					color = RED;
-					break;
-				case 1:
-					color = ORANGE;
-					break;
-				case 2:
-					color = YELLOW;
-					break;
-				case 3:
-					color = GREEN;
-					break;
-				case 4:
-					color = BLUE;
-					break;
-				case 5:
-					color = VIOLET;
-					break;
-			}
-			grid->color[col][row] = color;
+			grid->color[col][row] = rand()%6;
 		}
 	}
 }
@@ -103,14 +103,11 @@ static void initGrid(struct Grid *grid, int size)
 static void fillAdjacent(struct Grid *grid, int currentX, int currentY)
 {
 	/*
-
 	Checks adjacent cells in this order:
 	[ ][2][ ]
 	[1][ ][3]
 	[ ][4][ ]
-
 	will recurse for each matching color
-
 	*/
 
 	int checkingX = currentX;
@@ -121,19 +118,19 @@ static void fillAdjacent(struct Grid *grid, int currentX, int currentY)
 		int dy;
 	}	adjacent[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-	grid->color[checkingX][checkingY] = ORANGE;
+	grid->color[checkingX][checkingY] = 0;
 	for(int i = 0; i < 4; i++)
 	{
 		checkingX = currentX + adjacent[i].dx;
 		checkingY = currentY + adjacent[i].dy;
 
-		if((grid->color[checkingX][checkingY].r == 230) && (grid->color[checkingX][checkingY].g == 41))
+		if((checkingX < grid->size) && (checkingY < grid->size)) // within window boundaries
 		{
-			if((checkingX < grid->size) && (checkingY < grid->size)) // within window boundaries
+			if((checkingX >= 0) && (checkingY >= 0))
 			{
-				if((checkingX >= 0) && (checkingY >= 0))
+				if(grid->color[checkingX][checkingY] == 1) // 0 = RED
 				{
-					grid->color[checkingX][checkingY] = ORANGE;
+					grid->color[checkingX][checkingY] = 0;
 					fillAdjacent(grid, checkingX, checkingY);
 				}
 			}
