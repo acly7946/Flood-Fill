@@ -1,79 +1,29 @@
 #include "game.h"
 #include "window.h"
+#include <math.h>
 #include <raylib.h>
 #include <stdlib.h>
 
-#define MARGIN 9
-
 static void initGrid(struct Grid *grid, int size);
 static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int newColor);
+static void renderGrid(struct Window *window, struct Grid *grid);
+static void handleInput(struct Window *window, struct Grid *grid);
 
 void mainLoop(struct Window *window)
 {
-	int spacingX;
-	int spacingY;
-	Rectangle cell;
-	Color color;
 	struct Grid grid;
-	int selectionX = 0;
-	int selectionY = 0;
 
-	initGrid(&grid, 15);
+	initGrid(&grid, 14);
 
 	while(!WindowShouldClose())
 	{
 		window->frameTime = GetFrameTime();
 		window->width = GetScreenWidth();
 		window->height = GetScreenHeight();
-		spacingX = (window->width - MARGIN)/grid.size;
-		spacingY = (window->height - MARGIN)/grid.size;
 
-		if(IsMouseButtonPressed(0)) // left mouse button
-		{
-			selectionX = GetMouseX() / spacingX;
-			selectionY = GetMouseY() / spacingY;
-			if((selectionX < grid.size) && (selectionY < grid.size)) // within window boundaries
-			{
-				if((selectionX >= 0) && (selectionY >= 0))
-				{
-					//fillAdjacent(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
-					fillAdjacent(&grid, 0, 00, grid.color[0][0], grid.color[selectionX][selectionY]); // normal flood-it
-				}
-			}
-		}
+		renderGrid(window, &grid);
+		handleInput(window, &grid);
 
-		BeginDrawing();
-			ClearBackground(RAYWHITE);
-			for(int row = 0; row < grid.size; row++)
-			{
-				for(int col = 0; col < grid.size; col++)
-				{
-					switch(grid.color[row][col])
-					{
-						case 0:
-							color = RED;
-							break;
-						case 1:
-							color = ORANGE;
-							break;
-						case 2:
-							color = YELLOW;
-							break;
-						case 3:
-							color = GREEN;
-							break;
-						case 4:
-							color = BLUE;
-							break;
-						case 5:
-							color = VIOLET;
-							break;
-					}
-					cell = (Rectangle){spacingX*row + MARGIN, spacingY*col + MARGIN, spacingX, spacingY};
-					DrawRectangleRec(cell, color);
-				}
-			}
-		EndDrawing();
 	}
 	free(grid.color);
 }
@@ -137,6 +87,85 @@ static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int 
 						fillAdjacent(grid, checkRow, checkCol, oldColor, newColor);
 					}
 				}
+			}
+		}
+	}
+}
+
+static void renderGrid(struct Window *window, struct Grid *grid)
+{
+	int spacing;
+	Rectangle cell;
+	Color color;
+
+	if(window->width < window->height)
+	{
+		spacing = (window->width)/grid->size;
+	}
+	else
+	{
+		spacing = (window->height)/grid->size;
+	}
+
+	BeginDrawing();
+		ClearBackground(RAYWHITE);
+		for(int row = 0; row < grid->size; row++)
+		{
+			for(int col = 0; col < grid->size; col++)
+			{
+				switch(grid->color[row][col])
+				{
+					case 0:
+						color = RED;
+						break;
+					case 1:
+						color = ORANGE;
+						break;
+					case 2:
+						color = YELLOW;
+						break;
+					case 3:
+						color = GREEN;
+						break;
+					case 4:
+						color = BLUE;
+						break;
+					case 5:
+						color = VIOLET;
+						break;
+				}
+				cell = (Rectangle){spacing*row, spacing*col, spacing, spacing};
+				DrawRectangleRec(cell, color);
+			}
+		}
+	EndDrawing();
+}
+
+static void handleInput(struct Window *window, struct Grid *grid)
+{
+	int spacing;
+	int selectionX = 0;
+	int selectionY = 0;
+
+	if(window->width < window->height)
+	{
+		spacing = (window->width)/grid->size;
+	}
+	else
+	{
+		spacing = (window->height)/grid->size;
+	}
+
+	if(IsMouseButtonPressed(0)) // left mouse button
+	{
+		selectionX = (int)round(GetMouseX()/spacing);
+		selectionY = (int)round(GetMouseY()/spacing);
+		if((selectionX < grid->size) && (selectionY < grid->size)) // within window boundaries
+		{
+			if((selectionX >= 0) && (selectionY >= 0))
+			{
+				//fillAdjacent(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
+				fillAdjacent(grid, 0, 00, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
 			}
 		}
 	}
