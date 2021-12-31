@@ -36,7 +36,8 @@ void mainLoop(struct Window *window)
 			{
 				if((selectionX >= 0) && (selectionY >= 0))
 				{
-					fillAdjacent(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // fill with red for now
+					//fillAdjacent(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
+					fillAdjacent(&grid, 0, 00, grid.color[0][0], grid.color[selectionX][selectionY]); // normal flood-it
 				}
 			}
 		}
