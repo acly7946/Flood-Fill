@@ -2,12 +2,14 @@
 #include "window.h"
 #include <math.h>
 #include <raylib.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 static void initGrid(struct Grid *grid, int size);
 static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int newColor);
 static void renderGrid(struct Window *window, struct Grid *grid);
 static void handleInput(struct Window *window, struct Grid *grid);
+static Color getColor(int num);
 
 void mainLoop(struct Window *window)
 {
@@ -113,27 +115,7 @@ static void renderGrid(struct Window *window, struct Grid *grid)
 		{
 			for(int col = 0; col < grid->size; col++)
 			{
-				switch(grid->color[row][col])
-				{
-					case 0:
-						color = RED;
-						break;
-					case 1:
-						color = ORANGE;
-						break;
-					case 2:
-						color = YELLOW;
-						break;
-					case 3:
-						color = GREEN;
-						break;
-					case 4:
-						color = BLUE;
-						break;
-					case 5:
-						color = VIOLET;
-						break;
-				}
+				color = getColor(grid->color[row][col]);
 				cell = (Rectangle){spacing*row, spacing*col, spacing, spacing};
 				DrawRectangleRec(cell, color);
 			}
@@ -168,5 +150,27 @@ static void handleInput(struct Window *window, struct Grid *grid)
 				fillAdjacent(grid, 0, 00, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
 			}
 		}
+	}
+}
+
+static Color getColor(int num)
+{
+	switch(num)
+	{
+		case 0:
+			return RED;
+		case 1:
+			return ORANGE;
+		case 2:
+			return YELLOW;
+		case 3:
+			return GREEN;
+		case 4:
+			return BLUE;
+		case 5:
+			return VIOLET;
+		default:
+			fprintf(stderr, "ERROR(game.c, getColor): Invalid color number: %d", num);
+			exit(EXIT_FAILURE);
 	}
 }
