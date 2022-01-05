@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 static void initGrid(struct Grid *grid, int size);
-static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int newColor);
+static void floodFill(struct Grid *grid, int row, int col, int oldColor, int newColor);
 static void renderGrid(struct Window *window, struct Grid *grid);
 static void handleInput(struct Window *window, struct Grid *grid);
 static Color getColor(int num);
@@ -53,7 +53,7 @@ static void initGrid(struct Grid *grid, int size)
 	}
 }
 
-static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int newColor)
+static void floodFill(struct Grid *grid, int row, int col, int oldColor, int newColor)
 {
 	/*
 	Checks adjacent cells in this order:
@@ -86,7 +86,7 @@ static void fillAdjacent(struct Grid *grid, int row, int col, int oldColor, int 
 					if(grid->color[checkRow][checkCol] == oldColor)
 					{
 						grid->color[checkRow][checkCol] = newColor;
-						fillAdjacent(grid, checkRow, checkCol, oldColor, newColor);
+						floodFill(grid, checkRow, checkCol, oldColor, newColor);
 					}
 				}
 			}
@@ -147,7 +147,7 @@ static void handleInput(struct Window *window, struct Grid *grid)
 			if((selectionX >= 0) && (selectionY >= 0))
 			{
 				//fillAdjacent(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
-				fillAdjacent(grid, 0, 00, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
+				floodFill(grid, 0, 00, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
 			}
 		}
 	}
@@ -170,7 +170,7 @@ static Color getColor(int num)
 		case 5:
 			return VIOLET;
 		default:
-			fprintf(stderr, "ERROR(game.c, getColor): Invalid color number: %d", num);
+			fprintf(stderr, "\nERROR(game.c, getColor): Invalid color number: %d\n\n", num);
 			exit(EXIT_FAILURE);
 	}
 }
