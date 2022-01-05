@@ -8,12 +8,14 @@
 static void initGrid(struct Grid *grid, int size);
 static void floodFill(struct Grid *grid, int row, int col, int oldColor, int newColor);
 static void renderGrid(struct Window *window, struct Grid *grid);
-static void handleInput(struct Window *window, struct Grid *grid);
+static void renderUI(struct Window *window, int turns);
+static void handleInput(struct Window *window, struct Grid *grid, int *turns);
 static Color getColor(int num);
 
 void mainLoop(struct Window *window)
 {
 	struct Grid grid;
+	int turns = 25;
 
 	initGrid(&grid, 14);
 
@@ -23,9 +25,16 @@ void mainLoop(struct Window *window)
 		window->width = GetScreenWidth();
 		window->height = GetScreenHeight();
 
-		renderGrid(window, &grid);
-		handleInput(window, &grid);
+		if(!turns)
+		{
+			break;
+		}
 
+		BeginDrawing();
+			renderGrid(window, &grid);
+			renderUI(window, turns);
+		EndDrawing();
+		handleInput(window, &grid, &turns);
 	}
 	free(grid.color);
 }
@@ -109,21 +118,31 @@ static void renderGrid(struct Window *window, struct Grid *grid)
 		spacing = (window->height)/grid->size;
 	}
 
-	BeginDrawing();
-		ClearBackground(RAYWHITE);
-		for(int row = 0; row < grid->size; row++)
+	ClearBackground(RAYWHITE);
+	for(int row = 0; row < grid->size; row++)
+	{
+		for(int col = 0; col < grid->size; col++)
 		{
-			for(int col = 0; col < grid->size; col++)
-			{
-				color = getColor(grid->color[row][col]);
-				cell = (Rectangle){spacing*row, spacing*col, spacing, spacing};
-				DrawRectangleRec(cell, color);
-			}
+			color = getColor(grid->color[row][col]);
+			cell = (Rectangle){spacing*row, spacing*col, spacing, spacing};
+			DrawRectangleRec(cell, color);
 		}
-	EndDrawing();
+	}
 }
 
-static void handleInput(struct Window *window, struct Grid *grid)
+static void renderUI(struct Window *window, int turns)
+{
+	if(window->width > window->height)
+	{
+		DrawText(TextFormat("%d", turns), window->width - 60, 9, 50, BLACK);
+	}
+	else
+	{
+		DrawText(TextFormat("%d", turns), 9, window->height-60, 50, BLACK);
+	}
+}
+
+static void handleInput(struct Window *window, struct Grid *grid, int *turns)
 {
 	int spacing;
 	int selectionX = 0;
@@ -146,8 +165,9 @@ static void handleInput(struct Window *window, struct Grid *grid)
 		{
 			if((selectionX >= 0) && (selectionY >= 0))
 			{
-				//fillAdjacent(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
+				//floodFill(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
 				floodFill(grid, 0, 00, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
+				*turns-=1;
 			}
 		}
 	}
