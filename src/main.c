@@ -93,7 +93,7 @@ static void usage()
 
 static void initGame(struct Window *window, struct Options *options)
 {
-	window->width = 800,
+	window->width = 650,
 	window->height = 600;
 
 	if(options->msaa)
