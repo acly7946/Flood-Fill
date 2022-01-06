@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MARGIN 9
+
 static void initGrid(struct Grid *grid, int size);
 static void floodFill(struct Grid *grid, int row, int col, int oldColor, int newColor);
 static void renderGrid(struct Window *window, struct Grid *grid);
@@ -105,18 +107,17 @@ static void floodFill(struct Grid *grid, int row, int col, int oldColor, int new
 
 static void renderGrid(struct Window *window, struct Grid *grid)
 {
-	const int margin = 9;
 	int spacing;
 	Rectangle cell;
 	Color color;
 
 	if(window->width < window->height)
 	{
-		spacing = (window->width-margin*2)/grid->size;
+		spacing = (window->width-MARGIN*2)/grid->size;
 	}
 	else
 	{
-		spacing = (window->height-margin*2)/grid->size;
+		spacing = (window->height-MARGIN*2)/grid->size;
 	}
 
 	ClearBackground(RAYWHITE);
@@ -126,12 +127,12 @@ static void renderGrid(struct Window *window, struct Grid *grid)
 		for(int col = 0; col < grid->size; col++)
 		{
 			color = getColor(grid->color[row][col]);
-			cell = (Rectangle){margin+spacing*row, margin+spacing*col, spacing, spacing};
+			cell = (Rectangle){MARGIN+spacing*row, MARGIN+spacing*col, spacing, spacing};
 			DrawRectangleRec(cell, color);
 		}
 	}
 	// outline
-	DrawRectangleLines(margin, margin, grid->size*spacing, grid->size*spacing, BLACK);
+	DrawRectangleLines(MARGIN, MARGIN, grid->size*spacing, grid->size*spacing, BLACK);
 }
 
 static void renderUI(struct Window *window, int turns)
