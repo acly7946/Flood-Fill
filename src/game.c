@@ -43,7 +43,6 @@ void mainLoop(struct Window *window)
 
 static void initGrid(struct Grid *grid, int size)
 {
-	free(grid->color); // if done again with smaller value
 	// Create 1D array, then convert to 2D
 	grid->size = size;
 	int *data1D = (int*)malloc(size * size * sizeof(int));
