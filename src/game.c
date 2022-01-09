@@ -1,5 +1,6 @@
 #include "game.h"
 #include "window.h"
+#include <errno.h>
 #include <math.h>
 #include <raylib.h>
 #include <stdio.h>
@@ -7,7 +8,7 @@
 
 #define MARGIN 9
 
-static void initGrid(struct Grid *grid, int size);
+static int initGrid(struct Grid *grid, int size);
 static void floodFill(struct Grid *grid, int row, int col, int oldColor, int newColor);
 static void renderGrid(struct Window *window, struct Grid *grid);
 static void renderUI(struct Window *window, int turns);
@@ -19,7 +20,11 @@ void mainLoop(struct Window *window)
 	struct Grid grid;
 	int turns = 25;
 
-	initGrid(&grid, 14);
+	if(initGrid(&grid, 14) != 0)
+	{
+		perror("\nERROR(game.c, initGrid): Failed to initialize grid");
+		exit(EXIT_FAILURE);
+	}
 
 	while(!WindowShouldClose())
 	{
@@ -41,12 +46,17 @@ void mainLoop(struct Window *window)
 	free(grid.color);
 }
 
-static void initGrid(struct Grid *grid, int size)
+static int initGrid(struct Grid *grid, int size)
 {
 	// Create 1D array, then convert to 2D
 	grid->size = size;
 	int *data1D = (int*)malloc(size * size * sizeof(int));
 	grid->color = (int**)malloc(size * size * sizeof(int*));
+
+	if((data1D == NULL) || (grid->color == NULL))
+	{
+		return -1;
+	}
 
 	for(int i = 0; i < size; i++)
 	{
@@ -61,6 +71,8 @@ static void initGrid(struct Grid *grid, int size)
 			grid->color[row][col] = rand()%6;
 		}
 	}
+
+	return 0;
 }
 
 static void floodFill(struct Grid *grid, int row, int col, int oldColor, int newColor)
