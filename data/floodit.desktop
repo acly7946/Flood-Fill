@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Flood It
+Comment=Puzzle game
+Exec=floodit
+Icon=floodit
+Type=Application
+Categories=Game;ArcadeGame;
+StartupNotify=false
