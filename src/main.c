@@ -20,7 +20,7 @@ struct Options
 	int vsync;
 };
 
-static void usage();
+static void usage(void);
 static void initGame(struct Window *window, struct Options *options);
 
 int main(int argc, char *argv[])
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	return EXIT_SUCCESS;
 }
 
-static void usage()
+static void usage(void)
 {
 	fprintf(stderr,
 	"Usage: %s [OPTIONS]\n"
@@ -105,7 +105,7 @@ static void initGame(struct Window *window, struct Options *options)
 		SetConfigFlags(FLAG_VSYNC_HINT);
 	}
 
-	srand(time(NULL));
+	srand((unsigned)time(NULL));
 	InitWindow(window->width, window->height, "Flood It");
 	InitAudioDevice();
 }
