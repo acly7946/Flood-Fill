@@ -138,7 +138,7 @@ static void renderGrid(struct Window *window, struct Grid *grid)
 		for(int col = 0; col < grid->size; col++)
 		{
 			color = getColor(grid->color[row][col]);
-			cell = (Rectangle){MARGIN+spacing*row, MARGIN+spacing*col, spacing, spacing};
+			cell = (Rectangle){(float)(MARGIN+spacing*row), (float)(MARGIN+spacing*col), (float)spacing, (float)spacing};
 			DrawRectangleRec(cell, color);
 		}
 	}
@@ -175,8 +175,8 @@ static void handleInput(struct Window *window, struct Grid *grid, int *turns)
 
 	if(IsMouseButtonPressed(0)) // left mouse button
 	{
-		selectionX = (int)round(GetMouseX()/spacing);
-		selectionY = (int)round(GetMouseY()/spacing);
+		selectionX = GetMouseX()/spacing;
+		selectionY = GetMouseY()/spacing;
 		if((selectionX < grid->size) && (selectionY < grid->size)) // within window boundaries
 		{
 			if((selectionX >= 0) && (selectionY >= 0))
