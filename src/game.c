@@ -85,8 +85,8 @@ static void floodFill(struct Grid *grid, int row, int col, int oldColor, int new
 	and fill oldColor with newColor
 	*/
 
-	int checkRow = row; // The positions we're checking currently
-	int checkCol = col;
+	int checkRow; // The positions we're checking currently
+	int checkCol;
 	struct // vectors for checking adjacent cells
 	{
 		int dx;
@@ -160,8 +160,8 @@ static void renderUI(struct Window window, int turns)
 static void handleInput(struct Window window, struct Grid *grid, int *turns)
 {
 	int spacing;
-	int selectionX = 0;
-	int selectionY = 0;
+	int selectionX;
+	int selectionY;
 
 	if(window.width < window.height)
 	{
