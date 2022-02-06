@@ -10,9 +10,9 @@
 
 static int initGrid(struct Grid *grid, int size);
 static void floodFill(struct Grid *grid, int row, int col, int oldColor, int newColor);
-static void renderGrid(struct Window *window, struct Grid *grid);
-static void renderUI(struct Window *window, int turns);
-static void handleInput(struct Window *window, struct Grid *grid, int *turns);
+static void renderGrid(struct Window window, struct Grid grid);
+static void renderUI(struct Window window, int turns);
+static void handleInput(struct Window window, struct Grid *grid, int *turns);
 static Color getColor(int num);
 
 void mainLoop(struct Window *window)
@@ -38,10 +38,10 @@ void mainLoop(struct Window *window)
 		}
 
 		BeginDrawing();
-			renderGrid(window, &grid);
-			renderUI(window, turns);
+			renderGrid(*window, grid);
+			renderUI(*window, turns);
 		EndDrawing();
-		handleInput(window, &grid, &turns);
+		handleInput(*window, &grid, &turns);
 	}
 	free(grid.color);
 }
@@ -50,8 +50,8 @@ static int initGrid(struct Grid *grid, int size)
 {
 	// Create 1D array, then convert to 2D
 	grid->size = size;
-	int *data1D = (int*)malloc(size * size * sizeof(int));
-	grid->color = (int**)malloc(size * size * sizeof(int*));
+	int *data1D = malloc(size * size * sizeof(int));
+	grid->color = malloc(size * size * sizeof(data1D));
 
 	if((data1D == NULL) || (grid->color == NULL))
 	{
@@ -116,61 +116,61 @@ static void floodFill(struct Grid *grid, int row, int col, int oldColor, int new
 	}
 }
 
-static void renderGrid(struct Window *window, struct Grid *grid)
+static void renderGrid(struct Window window, struct Grid grid)
 {
 	int spacing;
 	Rectangle cell;
 	Color color;
 
-	if(window->width < window->height)
+	if(window.width < window.height)
 	{
-		spacing = (window->width-MARGIN*2)/grid->size;
+		spacing = (window.width-MARGIN*2)/grid.size;
 	}
 	else
 	{
-		spacing = (window->height-MARGIN*2)/grid->size;
+		spacing = (window.height-MARGIN*2)/grid.size;
 	}
 
 	ClearBackground(RAYWHITE);
 	// cells
-	for(int row = 0; row < grid->size; row++)
+	for(int row = 0; row < grid.size; row++)
 	{
-		for(int col = 0; col < grid->size; col++)
+		for(int col = 0; col < grid.size; col++)
 		{
-			color = getColor(grid->color[row][col]);
+			color = getColor(grid.color[row][col]);
 			cell = (Rectangle){(float)(MARGIN+spacing*row), (float)(MARGIN+spacing*col), (float)spacing, (float)spacing};
 			DrawRectangleRec(cell, color);
 		}
 	}
 	// outline
-	DrawRectangleLines(MARGIN, MARGIN, grid->size*spacing, grid->size*spacing, BLACK);
+	DrawRectangleLines(MARGIN, MARGIN, grid.size*spacing, grid.size*spacing, BLACK);
 }
 
-static void renderUI(struct Window *window, int turns)
+static void renderUI(struct Window window, int turns)
 {
-	if(window->width > window->height)
+	if(window.width > window.height)
 	{
-		DrawText(TextFormat("%d", turns), window->width - 60, 9, 50, BLACK);
+		DrawText(TextFormat("%d", turns), window.width - 60, 9, 50, BLACK);
 	}
 	else
 	{
-		DrawText(TextFormat("%d", turns), 9, window->height-60, 50, BLACK);
+		DrawText(TextFormat("%d", turns), 9, window.height-60, 50, BLACK);
 	}
 }
 
-static void handleInput(struct Window *window, struct Grid *grid, int *turns)
+static void handleInput(struct Window window, struct Grid *grid, int *turns)
 {
 	int spacing;
 	int selectionX = 0;
 	int selectionY = 0;
 
-	if(window->width < window->height)
+	if(window.width < window.height)
 	{
-		spacing = (window->width)/grid->size;
+		spacing = (window.width)/grid->size;
 	}
 	else
 	{
-		spacing = (window->height)/grid->size;
+		spacing = (window.height)/grid->size;
 	}
 
 	if(IsMouseButtonPressed(0)) // left mouse button
@@ -184,7 +184,7 @@ static void handleInput(struct Window *window, struct Grid *grid, int *turns)
 				if(grid->color[0][0] != grid->color[selectionX][selectionY])
 				{
 					//floodFill(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
-					floodFill(grid, 0, 00, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
+					floodFill(grid, 0, 0, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
 					*turns-=1;
 				}
 			}
