@@ -1,7 +1,6 @@
 #include "game.h"
 #include "window.h"
 #include <errno.h>
-#include <math.h>
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
