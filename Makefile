@@ -1,6 +1,6 @@
 # Edit variables here
 TARGET := floodit
-CFLAGS := -O2 -Wall -Wextra -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code -Wreturn-type -Wno-unused-result -Wformat=2 -pedantic
+CFLAGS := -O2 -Wall -Wextra -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code -Wreturn-type -Wno-unused-result -Wformat=2 -pedantic -g
 LDFLAGS := -lraylib
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
 MAKEFLAGS +="-j $(shell nproc)"
@@ -25,7 +25,17 @@ $(BUILD_DIR)/%.c.o: %.c
 clean:
 	@rm -r $(BUILD_DIR)
 
-.PHONY: clean
+install:
+	install -m 755 $(BUILD_DIR)/$(TARGET) /bin
+	install -m 644 data/floodit.desktop /usr/share/applications
+	install -m 644 data/floodit.png /usr/share/pixmaps/
+
+uninstall:
+	rm -f /bin/$(TARGET)
+	rm -f /usr/share/applications/floodit.desktop
+	rm -f /usr/share/pixmaps/floodit.png
+
+.PHONY: clean install uninstall
 -include $(DEPS)
 
 clr_gry = \033[2;37m
