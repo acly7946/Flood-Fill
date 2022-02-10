@@ -162,6 +162,7 @@ static void handleInput(struct Window window, struct Grid *grid, int *turns)
 	int spacing;
 	int selectionX;
 	int selectionY;
+	int keyPress;
 
 	if(window.width < window.height)
 	{
@@ -188,6 +189,36 @@ static void handleInput(struct Window window, struct Grid *grid, int *turns)
 				}
 			}
 		}
+	}
+	switch(GetKeyPressed())
+	{
+		case KEY_ONE:
+			keyPress = 0;
+			break;
+		case KEY_TWO:
+			keyPress = 1;
+			break;
+		case KEY_THREE:
+			keyPress = 2;
+			break;
+		case KEY_FOUR:
+			keyPress = 3;
+			break;
+		case KEY_FIVE:
+			keyPress = 4;
+			break;
+		case KEY_SIX:
+			keyPress = 5;
+			break;
+		default:
+			keyPress = -1;
+			break;
+
+	}
+	if(keyPress >= 0)
+	{
+		floodFill(grid, 0, 0, grid->color[0][0], keyPress);
+		*turns-=1;
 	}
 }
 
