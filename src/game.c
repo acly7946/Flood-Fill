@@ -49,8 +49,8 @@ static int initGrid(struct Grid *grid, int size)
 {
 	// Create 1D array, then convert to 2D
 	grid->size = size;
-	int *data1D = malloc(size * size * sizeof(int));
-	grid->color = malloc(size * size * sizeof(data1D));
+	int *data1D = malloc(size * size * sizeof(size));
+	grid->color = malloc(size * size * sizeof(size));
 
 	if((data1D == NULL) || (grid->color == NULL))
 	{
