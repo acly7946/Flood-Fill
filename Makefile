@@ -1,6 +1,7 @@
 # Edit variables here
 TARGET := floodit
-CFLAGS := -O2 -Wall -Wextra -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code -Wreturn-type -Wno-unused-result -Wformat=2 -pedantic -g
+WARN := -Wall -Wextra -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code -Wreturn-type -Wno-unused-result -Wformat=2 -pedantic
+CFLAGS := $(WARN) -O2 -g
 LDFLAGS := -lraylib
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
 MAKEFLAGS +="-j $(shell nproc)"
