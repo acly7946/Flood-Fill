@@ -54,6 +54,7 @@ static int initGrid(struct Grid *grid, int size)
 
 	if((data1D == NULL) || (grid->color == NULL))
 	{
+		free(data1D);
 		return -1;
 	}
 
