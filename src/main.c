@@ -10,7 +10,6 @@
 #define PROGRAM "floodit"
 #define VERSION "unversioned"
 #define AUTHOR "acly7946"
-#define OPTSTR "hV"
 #define MSAA_OPT INT_MAX // long-only opts
 #define VSYNC_OPT INT_MAX-1
 
@@ -39,7 +38,7 @@ int main(int argc, char *argv[])
 		{"version", no_argument, NULL, 'V'},
 		{"vsync", optional_argument, NULL, VSYNC_OPT},
 	};
-	while((optc = getopt_long(argc, argv, OPTSTR, long_options, NULL)) != EOF)
+	while((optc = getopt_long(argc, argv, "hV", long_options, NULL)) != EOF)
 	{
 		switch(optc)
 		{
