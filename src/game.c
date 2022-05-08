@@ -184,9 +184,9 @@ static void handleInput(struct Window window, struct Grid *grid, int *turns)
 			{
 				if(grid->color[0][0] != grid->color[selectionX][selectionY])
 				{
-					/* free-flood-it */
-					/*floodFill(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); */
-					floodFill(grid, 0, 0, grid->color[0][0], grid->color[selectionX][selectionY]); /* normal flood-it */
+					/* free-flood-fill */
+					/* floodFill(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); */
+					floodFill(grid, 0, 0, grid->color[0][0], grid->color[selectionX][selectionY]); /* normal flood-fill */
 					*turns-=1;
 				}
 			}
