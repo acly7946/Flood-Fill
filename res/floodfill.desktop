@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Flood Fill
+Comment=Puzzle game
+Exec=floodfill
+Icon=floodfill
+Type=Application
+Categories=Game;ArcadeGame;
+StartupNotify=false
