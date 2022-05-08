@@ -1,7 +1,6 @@
 #include "game.h"
 #include "window.h"
 #include <getopt.h>
-#include <limits.h>
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,8 +9,8 @@
 #define PROGRAM "floodit"
 #define VERSION "0.2.0"
 #define AUTHOR "acly7946"
-#define MSAA_OPT INT_MAX /* long-only opts */
-#define VSYNC_OPT INT_MAX-1
+#define MSAA_OPT 1000 /* long-only opts */
+#define VSYNC_OPT 1001
 
 struct Options
 {
