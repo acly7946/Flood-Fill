@@ -8,7 +8,7 @@
 #include <time.h>
 
 #define PROGRAM "floodit"
-#define VERSION "unversioned"
+#define VERSION "0.2.0"
 #define AUTHOR "acly7946"
 #define MSAA_OPT INT_MAX // long-only opts
 #define VSYNC_OPT INT_MAX-1
