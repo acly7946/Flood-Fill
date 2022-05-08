@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define PROGRAM "floodit"
+#define PROGRAM "floodfill"
 #define VERSION "0.2.0"
 #define AUTHOR "acly7946"
 #define MSAA_OPT 1000 /* long-only opts */
