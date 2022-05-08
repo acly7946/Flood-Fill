@@ -12,9 +12,10 @@ Dependencies:
 _\* Compile-time dep_
 
 Compilation:
-```
+``` sh
 git clone "https://github.com/acly7946/Flood-Fill"
 cd Flood-Fill
 meson build
 ninja -C build
+sudo ninja -C build install # to install
 ```
