@@ -18,4 +18,5 @@ cd Flood-Fill
 meson build
 ninja -C build
 sudo ninja -C build install # to install
+sudo ninja -C build uninstall # to uninstall
 ```
