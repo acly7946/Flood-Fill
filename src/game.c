@@ -47,7 +47,7 @@ void mainLoop(struct Window *window)
 
 static int initGrid(struct Grid *grid, int size)
 {
-	// Create 1D array, then convert to 2D
+	/* Create 1D array, then convert to 2D */
 	grid->size = size;
 	int *data1D = malloc(size * size * sizeof(size));
 	grid->color = malloc(size * size * sizeof(size));
@@ -63,7 +63,7 @@ static int initGrid(struct Grid *grid, int size)
 		grid->color[i] = data1D + (i * size);
 	}
 
-	// Fill with random colors from 1-6
+	/* Fill with random colors from 1-6 */
 	for(int row = 0; row < size; row++)
 	{
 		for(int col = 0; col < size; col++)
@@ -86,9 +86,9 @@ static void floodFill(struct Grid *grid, int row, int col, int oldColor, int new
 	and fill oldColor with newColor
 	*/
 
-	int checkRow; // The positions we're checking currently
+	int checkRow; /* The positions we're checking currently */
 	int checkCol;
-	struct // vectors for checking adjacent cells
+	struct /* vectors for checking adjacent cells */
 	{
 		int dx;
 		int dy;
@@ -101,7 +101,7 @@ static void floodFill(struct Grid *grid, int row, int col, int oldColor, int new
 		{
 			checkRow = row + adjacent[i].dx;
 			checkCol = col + adjacent[i].dy;
-			if((checkRow < grid->size) && (checkCol < grid->size)) // within window boundaries
+			if((checkRow < grid->size) && (checkCol < grid->size)) /* within window boundaries */
 			{
 				if((checkRow >= 0) && (checkCol >= 0))
 				{
@@ -132,7 +132,7 @@ static void renderGrid(struct Window window, struct Grid grid)
 	}
 
 	ClearBackground(RAYWHITE);
-	// cells
+	/* cells */
 	for(int row = 0; row < grid.size; row++)
 	{
 		for(int col = 0; col < grid.size; col++)
@@ -142,7 +142,7 @@ static void renderGrid(struct Window window, struct Grid grid)
 			DrawRectangleRec(cell, color);
 		}
 	}
-	// outline
+	/* outline */
 	DrawRectangleLines(MARGIN, MARGIN, grid.size*spacing, grid.size*spacing, BLACK);
 }
 
@@ -174,18 +174,19 @@ static void handleInput(struct Window window, struct Grid *grid, int *turns)
 		spacing = (window.height)/grid->size;
 	}
 
-	if(IsMouseButtonPressed(0)) // left mouse button
+	if(IsMouseButtonPressed(0)) /* left mouse button */
 	{
 		selectionX = GetMouseX()/spacing;
 		selectionY = GetMouseY()/spacing;
-		if((selectionX < grid->size) && (selectionY < grid->size)) // within window boundaries
+		if((selectionX < grid->size) && (selectionY < grid->size)) /* within window boundaries */
 		{
 			if((selectionX >= 0) && (selectionY >= 0))
 			{
 				if(grid->color[0][0] != grid->color[selectionX][selectionY])
 				{
-					//floodFill(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); // free-flood-it
-					floodFill(grid, 0, 0, grid->color[0][0], grid->color[selectionX][selectionY]); // normal flood-it
+					/* free-flood-it */
+					/*floodFill(&grid, selectionX, selectionY, grid.color[selectionX][selectionY], 0); */
+					floodFill(grid, 0, 0, grid->color[0][0], grid->color[selectionX][selectionY]); /* normal flood-it */
 					*turns-=1;
 				}
 			}
