@@ -20,6 +20,7 @@ struct Options
 };
 
 static void usage(void);
+static void version(void);
 static void initGame(struct Window *window, struct Options *options);
 
 int main(int argc, char *argv[])
@@ -59,8 +60,7 @@ int main(int argc, char *argv[])
 				break;
 
 			case 'V':
-				printf("%s, %s, %s\n", PROGRAM, VERSION, AUTHOR);
-				exit(EXIT_SUCCESS);
+				version();
 
 			default:
 				usage();
