@@ -9,6 +9,7 @@
 #define PROGRAM "floodfill"
 #define VERSION "0.2.0"
 #define AUTHOR "acly7946"
+#define LICENSE "MIT"
 #define MSAA_OPT 1000 /* long-only opts */
 #define VSYNC_OPT 1001
 
@@ -86,6 +87,16 @@ static void usage(void)
 	"  --vsync=[0|1]  Set vsync (default: 1)\n"
 	, PROGRAM);
 	exit(EXIT_FAILURE);
+}
+
+static void version(void)
+{
+	printf(
+	"%s %s\n"
+	"Copyright (c) 2022 %s\n"
+	"%s License\n"
+	, PROGRAM, VERSION, AUTHOR, LICENSE);
+	exit(EXIT_SUCCESS);
 }
 
 static void initGame(struct Window *window, struct Options *options)
