@@ -114,6 +114,6 @@ static void initGame(struct Window *window, struct Options *options)
 	}
 
 	srand((unsigned)time(NULL));
-	InitWindow(window->width, window->height, "Flood It");
+	InitWindow(window->width, window->height, "Flood Fill");
 	InitAudioDevice();
 }
