@@ -24,12 +24,12 @@ raylib = dependency('raylib')
 
 install_data(
 	'res/floodfill.desktop',
-	install_dir: '/usr/share/applications'
+	install_dir: 'share/applications'
 )
 
 install_data(
 	'res/floodfill.png',
-	install_dir: '/usr/share/pixmaps'
+	install_dir: 'share/pixmaps'
 )
 
 executable(
