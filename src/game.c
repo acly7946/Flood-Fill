@@ -31,16 +31,15 @@ void mainLoop(struct Window *window)
 		window->width = GetScreenWidth();
 		window->height = GetScreenHeight();
 
-		if(!turns)
+		if(turns)
 		{
-			break;
+			handleInput(*window, &grid, &turns);
 		}
 
 		BeginDrawing();
 			renderGrid(*window, grid);
 			renderUI(*window, turns);
 		EndDrawing();
-		handleInput(*window, &grid, &turns);
 	}
 	free(grid.color);
 }
