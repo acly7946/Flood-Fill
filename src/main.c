@@ -6,10 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define PROGRAM "floodfill"
-#define VERSION "0.2.0"
-#define AUTHOR "acly7946"
-#define LICENSE "MIT"
 #define MSAA_OPT 1000 /* long-only opts */
 #define VSYNC_OPT 1001
 
@@ -78,24 +74,19 @@ int main(int argc, char *argv[])
 static void usage(void)
 {
 	fprintf(stderr,
-	"Usage: %s [OPTIONS]\n"
+	"Usage: floodfill [OPTIONS]\n"
 	"\n"
 	"  -h, --help	 Print this help message and immediately quit\n"
 	"  -V, --version  Print version number and immediately quit\n"
 	"\n"
 	"  --msaa=[0|1]   Set anti-aliasing (default: 0)\n"
-	"  --vsync=[0|1]  Set vsync (default: 1)\n"
-	, PROGRAM);
+	"  --vsync=[0|1]  Set vsync (default: 1)\n");
 	exit(EXIT_FAILURE);
 }
 
 static void version(void)
 {
-	printf(
-	"%s %s\n"
-	"Copyright (c) 2022 %s\n"
-	"%s License\n"
-	, PROGRAM, VERSION, AUTHOR, LICENSE);
+	printf("%s %s (%s License)\n", NAME, VERSION, LICENSE);
 	exit(EXIT_SUCCESS);
 }
 

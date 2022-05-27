@@ -1,41 +1,30 @@
 project(
 	'Flood Fill',
 	'c',
-	version: '0.2.0',
+	version: '0.2.1',
 	license: 'MIT',
 	default_options:
 	[
-		'c_std=c11'
+		'c_std=c11',
+		'warning_level=3'
 	]
 )
 
 add_project_arguments(
 	[
-		'-Wno-unused-parameter',
-		'-Wno-unused-result',
-		'-Wno-missing-braces',
 		'-Wundef',
 		'-Wvla',
+		'-DNAME="@0@"'.format(meson.project_name()),
+		'-DVERSION="@0@"'.format(meson.project_version()),
+		'-DLICENSE="@0@"'.format(meson.project_license()[0]),
 	],
 	language: 'c'
 )
 
-raylib = dependency('raylib')
+datadir = get_option('datadir')
+sysconfdir = get_option('sysconfdir')
+prefix = get_option('prefix')
+incdir = include_directories('include')
 
-install_data(
-	'res/floodfill.desktop',
-	install_dir: 'share/applications'
-)
-
-install_data(
-	'res/floodfill.png',
-	install_dir: 'share/pixmaps'
-)
-
-executable(
-	'floodfill',
-	'src/main.c',
-	'src/game.c',
-	dependencies: raylib,
-	install: true
-)
+subdir('res')
+subdir('src')
